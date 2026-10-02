@@ -345,57 +345,81 @@ body p, body li, body blockquote, body .article-section, body .article-main {
 </div></section>
 <script>
 function respond(){
-  const t=document.getElementById('shareText').value.trim();
+  const input=document.getElementById('shareText');
   const e=document.getElementById('response');
+  const raw=(input.value||'').trim();
   e.style.display='block';
   e.className='result encouragement-result';
-  if(!t){
-    e.innerHTML='<strong>Bạn có thể bắt đầu bằng một câu rất ngắn.</strong><br>Ví dụ: “Hôm nay mình thấy quá mệt vì…”';
+
+  if(!raw){
+    e.innerHTML='<div class="encouragement-label">💬 BẮT ĐẦU TỪ ĐÂY</div><strong>Bạn cứ viết điều đang nặng lòng.</strong><p>Không cần viết hay hay đầy đủ. Chỉ một câu như “Em đang rất sợ kỳ thi” cũng đủ để mình đưa ra một lời động viên và một bước nhỏ để bạn thử ngay.</p><div class="encouragement-action"><b>Gợi ý:</b> “Điều làm mình lo nhất lúc này là…”</div>';
+    e.scrollIntoView({behavior:'smooth',block:'nearest'});
     return;
   }
-  const x=t.toLowerCase();
-  let title='Một lời nhắn dành cho bạn';
-  let msg='';
-  let action='';
-  let urgent=false;
 
-  if(/tự tử|tự sát|tự làm hại|muốn chết|không muốn sống|kết liễu|tự huỷ|tự hủy/.test(x)){
-    urgent=true;
-    title='Điều quan trọng nhất lúc này là bạn được an toàn';
-    msg='Mình rất tiếc vì bạn đang phải chịu một cảm giác nặng nề như vậy. Bạn không cần tự xử lý chuyện này một mình.';
-    action='Hãy nói ngay với bố mẹ, thầy cô, người thân hoặc một người lớn bạn tin tưởng và nhờ họ ở cạnh bạn. Nếu bạn có nguy cơ làm hại bản thân ngay lúc này, hãy gọi dịch vụ khẩn cấp tại nơi bạn đang ở hoặc đến cơ sở y tế gần nhất.';
-  } else if(/thi|điểm|đại học|đậu|trượt|kiểm tra|thi cử|bài vở|môn|học tập/.test(x)){
-    title='Bạn đang cố gắng, và điều đó có ý nghĩa';
-    msg='Một bài kiểm tra hay một điểm số không thể nói hết khả năng và giá trị của bạn. Khi mọi thứ đang quá nhiều, bạn không cần giải quyết cả học kỳ trong một buổi.';
-    action='Hãy chọn một việc nhỏ có thể hoàn thành trong 25–30 phút, rồi nghỉ ngắn. Tiến từng bước vẫn là tiến bộ.';
-  } else if(/mất ngủ|khó ngủ|thức khuya|ngủ không/.test(x)){
-    title='Bạn cũng xứng đáng được nghỉ ngơi';
-    msg='Nếu bạn đã cố gắng rất nhiều, việc cơ thể cần nghỉ không phải là lười biếng. Thiếu ngủ còn có thể khiến việc học và cảm xúc trở nên khó khăn hơn.';
-    action='Tối nay thử dừng học sớm hơn một chút, ghi ra những việc cần làm ngày mai rồi cho phép mình nghỉ.';
-  } else if(/cha mẹ|bố mẹ|ba mẹ|gia đình|kỳ vọng|kì vọng/.test(x)){
-    title='Bạn không cần phải đáp ứng mọi kỳ vọng một mình';
-    msg='Kỳ vọng từ gia đình đôi khi xuất phát từ sự quan tâm nhưng vẫn có thể khiến bạn thấy rất nặng nề. Cảm giác đó đáng được lắng nghe.';
-    action='Bạn có thể thử nói: “Con đang cảm thấy… và con cần…”. Nếu khó nói trực tiếp, hãy nhờ một thầy cô hoặc người lớn đáng tin cậy làm cầu nối.';
-  } else if(/bạn bè|so sánh|mạng xã hội|facebook|tiktok|instagram/.test(x)){
-    title='Bạn không cần chạy theo nhịp của người khác';
-    msg='Bạn thường nhìn thấy thành tích của người khác nhưng không nhìn thấy toàn bộ những gì họ đã trải qua. Vì vậy, so sánh mình với một bức ảnh hay một kết quả không phải lúc nào cũng công bằng.';
-    action='Hãy thử ghi lại một điều bạn đã tiến bộ trong tuần này, dù nó rất nhỏ.';
-  } else if(/ngành|trường|nghề|tương lai|định hướng/.test(x)){
-    title='Chưa có câu trả lời ngay cũng không sao';
-    msg='Chọn ngành và chọn trường là một quyết định lớn, nên việc còn phân vân là điều có thể xảy ra. Bạn không cần biết toàn bộ tương lai trong một ngày.';
-    action='Hãy bắt đầu bằng 3 câu hỏi: mình thích gì, mình làm tốt gì và điều kiện thực tế của mình là gì. Sau đó tìm hiểu từng lựa chọn một.';
-  } else if(/mệt|kiệt sức|chán|stress|căng thẳng|áp lực|lo lắng|buồn|khóc/.test(x)){
-    title='Mình nghe thấy bạn đang rất mệt';
-    msg='Bạn không cần phải tỏ ra ổn mọi lúc. Việc bạn dừng lại và viết ra điều đang nặng lòng đã là một bước để chăm sóc bản thân.';
-    action='Ngay lúc này, thử uống một cốc nước, rời bàn 5–10 phút và chọn đúng một việc quan trọng nhất. Nếu cảm giác này kéo dài hoặc ảnh hưởng mạnh đến sinh hoạt, hãy tìm một người lớn hoặc chuyên gia để cùng bạn xử lý.';
+  // Chuẩn hóa chữ để nhận diện cả trường hợp học sinh gõ không dấu.
+  const norm=v=>v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
+  const x=norm(raw);
+  let category=''; let title=''; let msg=''; let advice=''; let next=''; let urgent=false;
+
+  if(/tu tu|tu sat|tu lam hai|muon chet|khong muon song|ket lieu|tu huy/.test(x)){
+    urgent=true; category='ƯU TIÊN AN TOÀN';
+    title='Lúc này, điều quan trọng nhất là bạn được an toàn.';
+    msg='Mình rất tiếc vì bạn đang phải chịu một cảm giác nặng nề như vậy. Việc bạn nói ra điều này là rất quan trọng và bạn không cần tự chịu đựng một mình.';
+    advice='Hãy báo ngay cho bố mẹ, thầy cô, người thân hoặc một người lớn bạn tin tưởng và nhờ họ ở cạnh bạn. Nếu bạn có nguy cơ làm hại bản thân ngay lúc này, hãy gọi dịch vụ khẩn cấp tại nơi bạn đang ở hoặc đến cơ sở y tế gần nhất.';
+    next='Đừng ở một mình và hãy đặt xa những thứ bạn có thể dùng để làm hại bản thân.';
+  } else if(/thi|diem|dai hoc|dau|truot|kiem tra|thi cu|bai vo|mon hoc|hoc tap/.test(x)){
+    category='ÁP LỰC HỌC TẬP & THI CỬ';
+    title='Bạn không cần giải quyết cả kỳ thi trong một lần.';
+    msg='Điểm số quan trọng, nhưng một bài kiểm tra không quyết định toàn bộ giá trị hay tương lai của bạn. Khi lo quá nhiều, việc học cũng dễ trở nên khó hơn.';
+    advice='Chọn 1 môn hoặc 1 phần kiến thức đang cần nhất. Đặt hẹn giờ 25 phút, tắt thông báo và chỉ làm một nhiệm vụ. Hết 25 phút, nghỉ 5 phút rồi mới quyết định có học tiếp hay không.';
+    next='Viết ra ngay: “Trong 25 phút tới, mình sẽ làm ______.”';
+  } else if(/mat ngu|kho ngu|thuc khuya|ngu khong|ngu it/.test(x)){
+    category='NGỦ NGHỈ';
+    title='Nghỉ ngơi không phải là bỏ cuộc.';
+    msg='Khi thiếu ngủ, khả năng tập trung và điều chỉnh cảm xúc cũng có thể khó hơn. Bạn không cần dùng thêm một đêm thức khuya để “gỡ” một ngày học chưa đủ.';
+    advice='Tối nay hãy ghi 3 việc cần làm vào ngày mai, đóng sách vở và dành thời gian thư giãn trước khi ngủ. Nếu mất ngủ kéo dài hoặc ảnh hưởng rõ đến sinh hoạt, hãy nói với người lớn và tìm hỗ trợ phù hợp.';
+    next='Việc nhỏ ngay lúc này: uống nước, cất điện thoại khỏi giường và cho mình một khoảng nghỉ.';
+  } else if(/cha me|bo me|ba me|gia dinh|ky vong|ki vong|ep diem/.test(x)){
+    category='ÁP LỰC GIA ĐÌNH';
+    title='Bạn có quyền nói về áp lực mà mình đang chịu.';
+    msg='Gia đình có thể kỳ vọng vì quan tâm, nhưng điều đó không có nghĩa bạn phải tự gánh tất cả. Cảm giác mệt mỏi của bạn vẫn đáng được lắng nghe.';
+    advice='Thử nói theo mẫu: “Con đang cảm thấy… Con mong bố mẹ…”. Nếu nói trực tiếp quá khó, hãy viết tin nhắn hoặc nhờ một thầy cô/người lớn đáng tin cậy làm cầu nối.';
+    next='Chọn một người an toàn và nói với họ một câu thật cụ thể về điều đang khiến bạn áp lực.';
+  } else if(/ban be|so sanh|mang xa hoi|facebook|tiktok|instagram|thua kem/.test(x)){
+    category='BẠN BÈ & SO SÁNH';
+    title='Bạn không cần chạy theo tốc độ của người khác.';
+    msg='Mạng xã hội thường cho thấy thành tích và những khoảnh khắc đẹp, không phải toàn bộ câu chuyện. So sánh như vậy dễ khiến bạn quên mất tiến bộ của chính mình.';
+    advice='Tạm rời nội dung khiến bạn áp lực trong hôm nay. Sau đó ghi 2 điều bạn đã làm tốt hoặc tiến bộ trong tuần này, dù chúng rất nhỏ.';
+    next='Hôm nay hãy so sánh mình với chính mình của tuần trước, không phải với người khác.';
+  } else if(/nganh|truong|nghe|tuong lai|dinh huong|chon nganh/.test(x)){
+    category='ĐỊNH HƯỚNG TƯƠNG LAI';
+    title='Chưa biết ngay câu trả lời cũng hoàn toàn có thể xảy ra.';
+    msg='Chọn ngành và chọn trường là quyết định lớn. Bạn không cần hiểu toàn bộ tương lai chỉ trong một buổi tối.';
+    advice='Lập 3 cột: “Mình thích”, “Mình làm tốt”, “Điều kiện thực tế”. Chọn 2–3 ngành để tìm hiểu rồi so sánh chương trình học, yêu cầu đầu vào và cơ hội nghề nghiệp.';
+    next='Bắt đầu bằng một câu hỏi: “Nếu không sợ điểm số hay ý kiến người khác, mình muốn tìm hiểu điều gì?”';
+  } else if(/met|kiet suc|chan|stress|cang thang|ap luc|lo lang|buon|khoc|hoang mang|bat luc/.test(x)){
+    category='CẢM XÚC & QUÁ TẢI';
+    title='Bạn không cần phải luôn tỏ ra ổn.';
+    msg='Việc bạn dừng lại và viết ra điều đang nặng lòng đã là một bước chăm sóc bản thân. Mệt không có nghĩa là yếu.';
+    advice='Tạm dừng 5–10 phút, uống nước, hít thở chậm và chọn đúng một việc quan trọng nhất trong hôm nay. Nếu cảm giác này kéo dài hoặc ảnh hưởng mạnh đến học tập, ngủ nghỉ hay sinh hoạt, hãy tìm một người lớn hoặc chuyên gia để cùng bạn xử lý.';
+    next='Đặt mục tiêu nhỏ nhất có thể: “Trong 10 phút tới, mình chỉ cần ______.”';
   } else {
-    title='Cảm ơn bạn đã nói ra';
-    msg='Điều bạn đang trải qua đáng được lắng nghe. Bạn không cần phải giải quyết mọi thứ ngay lập tức.';
-    action='Hãy thử tự hỏi: “Việc nhỏ nhất mình có thể làm cho bản thân trong 10 phút tới là gì?”. Nếu muốn, bạn có thể viết thêm để nhận một lời nhắn sát với tình huống của mình hơn.';
+    category='LỜI NHẮN DÀNH CHO BẠN';
+    title='Cảm ơn bạn đã nói ra điều đang nghĩ.';
+    msg='Mình chưa muốn đoán sai câu chuyện của bạn. Dù vấn đề là gì, bạn không nhất thiết phải giải quyết tất cả ngay hôm nay.';
+    advice='Hãy thử viết lại vấn đề thành một câu cụ thể: “Mình đang lo về…”, “Mình cần giúp ở…”, hoặc “Việc khiến mình mệt nhất là…”. Khi vấn đề rõ hơn, bạn sẽ dễ chọn bước tiếp theo hơn.';
+    next='Nếu muốn, hãy viết thêm một câu về điều khiến bạn lo nhất lúc này.';
   }
 
-  const label=urgent?'⚠️ Ưu tiên an toàn':'💬 Lời động viên tự động';
-  e.innerHTML='<div class="encouragement-label">'+label+'</div><strong>'+title+'</strong><p>'+msg+'</p><div class="encouragement-action">'+action+'</div>';
+  const label=urgent?'⚠️ '+category:'💬 '+category;
+  e.innerHTML='<div class="encouragement-label">'+label+'</div>'+
+    '<strong>'+title+'</strong>'+
+    '<p>'+msg+'</p>'+
+    '<div class="encouragement-action"><b>💡 Lời khuyên:</b> '+advice+'</div>'+
+    '<div class="encouragement-action"><b>🌱 Bước nhỏ ngay lúc này:</b> '+next+'</div>'+
+    (urgent?'<div class="encouragement-action" style="border-left-color:#c91f2b;background:#fff4f4;color:#7a2222"><b>Quan trọng:</b> Hãy tìm một người lớn ở bên bạn ngay bây giờ.</div>':'');
+  e.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 </script>
 <section class="container portal-section"><h2>Chuyên mục dành cho tiếng nói học sinh</h2><p class="portal-intro">Bạn có thể viết về một ngày của mình, một điều khiến bạn lo lắng hoặc một điều bạn muốn nhắn với chính mình.</p><div class="portal-grid">

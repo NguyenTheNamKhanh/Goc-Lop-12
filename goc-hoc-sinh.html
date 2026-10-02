@@ -291,6 +291,14 @@ body p, body li, body blockquote, body .article-section, body .article-main {
   text-align: left !important;
 }
 </style>
+
+<style id="encouragement-style">
+.encouragement-result{margin-top:18px;padding:16px 18px;border:1px solid #dfe3e8;background:#f8fafc;color:#303846;line-height:1.65}
+.encouragement-result strong{font-size:17px;color:#1d2430}
+.encouragement-result p{margin:7px 0;color:#596371;font-size:14px}
+.encouragement-label{display:inline-block;margin-bottom:8px;color:#c91f2b;font-size:10px;font-weight:900;letter-spacing:0!important}
+.encouragement-action{margin-top:10px;padding:11px 13px;background:#eef8f4;border-left:3px solid #6da88c;font-size:13px;color:#4c6259}
+</style>
 </head><body>
 <header class="news-header">
  <div class="topline"><div class="container top-inner"><span>THÔNG TIN HỖ TRỢ HỌC SINH LỚP 12</span><span>GÓC LỚP 12</span></div></div>
@@ -335,7 +343,61 @@ body p, body li, body blockquote, body .article-section, body .article-main {
  <a class="aside-link" href="tim-ho-tro.html"><span>05</span>Khi nào cần tìm hỗ trợ?</a>
 </aside>
 </div></section>
-<script>function respond(){const t=document.getElementById('shareText').value.trim(),e=document.getElementById('response');e.style.display='block';e.textContent=t?'Cảm ơn bạn đã viết ra. Điều bạn đang trải qua đáng được lắng nghe. Hãy chọn một phần nhỏ mà bạn có thể xử lý hôm nay và cho phép mình nhờ người khác hỗ trợ nếu cần.':'Bạn có thể viết một câu thôi cũng được.'}</script>
+<script>
+function respond(){
+  const t=document.getElementById('shareText').value.trim();
+  const e=document.getElementById('response');
+  e.style.display='block';
+  e.className='result encouragement-result';
+  if(!t){
+    e.innerHTML='<strong>Bạn có thể bắt đầu bằng một câu rất ngắn.</strong><br>Ví dụ: “Hôm nay mình thấy quá mệt vì…”';
+    return;
+  }
+  const x=t.toLowerCase();
+  let title='Một lời nhắn dành cho bạn';
+  let msg='';
+  let action='';
+  let urgent=false;
+
+  if(/tự tử|tự sát|tự làm hại|muốn chết|không muốn sống|kết liễu|tự huỷ|tự hủy/.test(x)){
+    urgent=true;
+    title='Điều quan trọng nhất lúc này là bạn được an toàn';
+    msg='Mình rất tiếc vì bạn đang phải chịu một cảm giác nặng nề như vậy. Bạn không cần tự xử lý chuyện này một mình.';
+    action='Hãy nói ngay với bố mẹ, thầy cô, người thân hoặc một người lớn bạn tin tưởng và nhờ họ ở cạnh bạn. Nếu bạn có nguy cơ làm hại bản thân ngay lúc này, hãy gọi dịch vụ khẩn cấp tại nơi bạn đang ở hoặc đến cơ sở y tế gần nhất.';
+  } else if(/thi|điểm|đại học|đậu|trượt|kiểm tra|thi cử|bài vở|môn|học tập/.test(x)){
+    title='Bạn đang cố gắng, và điều đó có ý nghĩa';
+    msg='Một bài kiểm tra hay một điểm số không thể nói hết khả năng và giá trị của bạn. Khi mọi thứ đang quá nhiều, bạn không cần giải quyết cả học kỳ trong một buổi.';
+    action='Hãy chọn một việc nhỏ có thể hoàn thành trong 25–30 phút, rồi nghỉ ngắn. Tiến từng bước vẫn là tiến bộ.';
+  } else if(/mất ngủ|khó ngủ|thức khuya|ngủ không/.test(x)){
+    title='Bạn cũng xứng đáng được nghỉ ngơi';
+    msg='Nếu bạn đã cố gắng rất nhiều, việc cơ thể cần nghỉ không phải là lười biếng. Thiếu ngủ còn có thể khiến việc học và cảm xúc trở nên khó khăn hơn.';
+    action='Tối nay thử dừng học sớm hơn một chút, ghi ra những việc cần làm ngày mai rồi cho phép mình nghỉ.';
+  } else if(/cha mẹ|bố mẹ|ba mẹ|gia đình|kỳ vọng|kì vọng/.test(x)){
+    title='Bạn không cần phải đáp ứng mọi kỳ vọng một mình';
+    msg='Kỳ vọng từ gia đình đôi khi xuất phát từ sự quan tâm nhưng vẫn có thể khiến bạn thấy rất nặng nề. Cảm giác đó đáng được lắng nghe.';
+    action='Bạn có thể thử nói: “Con đang cảm thấy… và con cần…”. Nếu khó nói trực tiếp, hãy nhờ một thầy cô hoặc người lớn đáng tin cậy làm cầu nối.';
+  } else if(/bạn bè|so sánh|mạng xã hội|facebook|tiktok|instagram/.test(x)){
+    title='Bạn không cần chạy theo nhịp của người khác';
+    msg='Bạn thường nhìn thấy thành tích của người khác nhưng không nhìn thấy toàn bộ những gì họ đã trải qua. Vì vậy, so sánh mình với một bức ảnh hay một kết quả không phải lúc nào cũng công bằng.';
+    action='Hãy thử ghi lại một điều bạn đã tiến bộ trong tuần này, dù nó rất nhỏ.';
+  } else if(/ngành|trường|nghề|tương lai|định hướng/.test(x)){
+    title='Chưa có câu trả lời ngay cũng không sao';
+    msg='Chọn ngành và chọn trường là một quyết định lớn, nên việc còn phân vân là điều có thể xảy ra. Bạn không cần biết toàn bộ tương lai trong một ngày.';
+    action='Hãy bắt đầu bằng 3 câu hỏi: mình thích gì, mình làm tốt gì và điều kiện thực tế của mình là gì. Sau đó tìm hiểu từng lựa chọn một.';
+  } else if(/mệt|kiệt sức|chán|stress|căng thẳng|áp lực|lo lắng|buồn|khóc/.test(x)){
+    title='Mình nghe thấy bạn đang rất mệt';
+    msg='Bạn không cần phải tỏ ra ổn mọi lúc. Việc bạn dừng lại và viết ra điều đang nặng lòng đã là một bước để chăm sóc bản thân.';
+    action='Ngay lúc này, thử uống một cốc nước, rời bàn 5–10 phút và chọn đúng một việc quan trọng nhất. Nếu cảm giác này kéo dài hoặc ảnh hưởng mạnh đến sinh hoạt, hãy tìm một người lớn hoặc chuyên gia để cùng bạn xử lý.';
+  } else {
+    title='Cảm ơn bạn đã nói ra';
+    msg='Điều bạn đang trải qua đáng được lắng nghe. Bạn không cần phải giải quyết mọi thứ ngay lập tức.';
+    action='Hãy thử tự hỏi: “Việc nhỏ nhất mình có thể làm cho bản thân trong 10 phút tới là gì?”. Nếu muốn, bạn có thể viết thêm để nhận một lời nhắn sát với tình huống của mình hơn.';
+  }
+
+  const label=urgent?'⚠️ Ưu tiên an toàn':'💬 Lời động viên tự động';
+  e.innerHTML='<div class="encouragement-label">'+label+'</div><strong>'+title+'</strong><p>'+msg+'</p><div class="encouragement-action">'+action+'</div>';
+}
+</script>
 <section class="container portal-section"><h2>Chuyên mục dành cho tiếng nói học sinh</h2><p class="portal-intro">Bạn có thể viết về một ngày của mình, một điều khiến bạn lo lắng hoặc một điều bạn muốn nhắn với chính mình.</p><div class="portal-grid">
 <article class="portal-item"><div class="label">NHẬT KÝ</div><h3>Hôm nay mình đã cố gắng điều gì?</h3><p>Ghi lại một việc nhỏ bạn đã hoàn thành, dù chưa hoàn hảo.</p></article>
 <article class="portal-item"><div class="label">TỰ NHẮN</div><h3>Nếu được nói với bản thân trước kỳ thi...</h3><p>Viết một câu bình tĩnh và thực tế thay cho những lời tự trách.</p></article>

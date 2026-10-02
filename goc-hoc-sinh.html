@@ -196,6 +196,20 @@ body{font-family:Arial,"Helvetica Neue",sans-serif;font-size:15px;line-height:1.
 .portal-item{padding:18px;border-right:1px solid #dfe3e8;border-bottom:1px solid #dfe3e8;background:#fff}.portal-item .label{font-size:9px;font-weight:900;color:#c91f2b;letter-spacing:.8px}.portal-item h3{font-size:17px;line-height:1.3;margin:7px 0}.portal-item p{font-size:12px;color:#68717d}.portal-item a{color:#c91f2b;font-size:11px;font-weight:800}
 .info-band{margin:25px 0;background:#f4f5f7;border:1px solid #dfe3e8;padding:18px}.info-band strong{font-family:Georgia,"Times New Roman",serif;font-size:18px}.info-band p{font-size:13px;color:#626b77;margin-top:4px}
 @media(max-width:800px){.portal-strip .container,.portal-grid{grid-template-columns:1fr 1fr}.portal-link:nth-child(2){border-right:0}.portal-link{border-bottom:1px solid #e1e4e8}.portal-item{padding:15px}}
+
+/* STUDENT ASSISTANT */
+.assistant-launcher{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border:0;border-radius:50%;background:#c91f2b;color:#fff;font-size:25px;cursor:pointer;box-shadow:0 10px 28px rgba(20,25,35,.22);z-index:9998}
+.assistant-panel{position:fixed;right:22px;bottom:92px;width:min(390px,calc(100vw - 28px));height:560px;background:#fff;border:1px solid #dfe3e8;box-shadow:0 18px 55px rgba(25,32,45,.2);z-index:9999;display:none;flex-direction:column}
+.assistant-panel.open{display:flex}
+.assistant-head{background:#1d2430;color:#fff;padding:16px 17px;display:flex;align-items:center;justify-content:space-between}
+.assistant-head strong{font-family:Georgia,"Times New Roman",serif;font-size:18px}.assistant-head small{display:block;color:#c9ced7;font-family:Arial,sans-serif;font-size:11px;margin-top:2px}
+.assistant-close{border:0;background:transparent;color:#fff;font-size:22px;cursor:pointer}
+.assistant-messages{flex:1;overflow:auto;padding:15px;background:#f6f7f9;display:flex;flex-direction:column;gap:10px}
+.assistant-msg{max-width:86%;padding:10px 12px;border-radius:13px;font-size:13px;line-height:1.55;white-space:pre-wrap}.assistant-msg.bot{background:#fff;border:1px solid #e1e4e8;align-self:flex-start}.assistant-msg.user{background:#c91f2b;color:#fff;align-self:flex-end}
+.assistant-suggestions{display:flex;gap:7px;overflow:auto;padding:9px 12px;border-top:1px solid #e1e4e8;background:#fff}.assistant-suggestions button{white-space:nowrap;border:1px solid #dfe3e8;background:#fff;border-radius:99px;padding:7px 10px;font-size:11px;cursor:pointer}
+.assistant-input{display:flex;gap:7px;padding:10px;border-top:1px solid #dfe3e8;background:#fff}.assistant-input textarea{height:45px;min-height:45px;resize:none;padding:10px;border-radius:10px}.assistant-send{width:48px;border:0;border-radius:10px;background:#c91f2b;color:#fff;font-weight:800;cursor:pointer}
+.assistant-note{padding:7px 12px;background:#fff8e8;color:#765d20;font-size:10px;border-top:1px solid #eee0b9}
+@media(max-width:600px){.assistant-panel{right:10px;bottom:78px;height:min(560px,calc(100vh - 95px))}.assistant-launcher{right:12px;bottom:12px}}
 </style></head><body>
 <header class="news-header">
  <div class="topline"><div class="container top-inner"><span>THÔNG TIN HỖ TRỢ HỌC SINH LỚP 12</span><span>GÓC LỚP 12</span></div></div>
@@ -255,4 +269,33 @@ function searchArticles(){
    el.style.display=(!q || el.innerText.toLowerCase().includes(q))?'':'none';
  });
 }
+</script><script>
+/* STUDENT ASSISTANT ENGINE — offline demo, no API key required */
+(function(){
+ const launcher=document.createElement('button'); launcher.className='assistant-launcher'; launcher.setAttribute('aria-label','Mở Trợ lý Góc học sinh'); launcher.textContent='💬';
+ const panel=document.createElement('section'); panel.className='assistant-panel'; panel.innerHTML=`
+  <div class="assistant-head"><div><strong>Trợ lý Góc học sinh</strong><small>Lắng nghe • Gợi ý • Không phán xét</small></div><button class="assistant-close" aria-label="Đóng">×</button></div>
+  <div class="assistant-messages" id="assistantMessages"><div class="assistant-msg bot">Chào bạn! Mình có thể lắng nghe và gợi ý cách xử lý những chuyện như áp lực học tập, thi cử, mất ngủ, kỳ vọng gia đình, chọn ngành hoặc cảm giác quá mệt. Bạn đang muốn nói về điều gì?</div></div>
+  <div class="assistant-suggestions"><button data-q="Em đang rất áp lực vì học tập">Áp lực học tập</button><button data-q="Em lo lắng vì kỳ thi">Lo kỳ thi</button><button data-q="Em mất ngủ vì học">Mất ngủ</button><button data-q="Em không biết chọn ngành nào">Chọn ngành</button></div>
+  <div class="assistant-note">Lưu ý: Đây là trợ lý tự động của website. Nếu bạn thấy mình không an toàn hoặc có ý nghĩ tự làm hại bản thân, hãy tìm người lớn đáng tin cậy hoặc hỗ trợ chuyên môn ngay.</div>
+  <div class="assistant-input"><textarea id="assistantInput" placeholder="Viết điều bạn đang nghĩ..." aria-label="Lời nhắn"></textarea><button class="assistant-send" id="assistantSend">Gửi</button></div>`;
+ document.body.appendChild(launcher); document.body.appendChild(panel);
+ const box=panel.querySelector('#assistantMessages'), input=panel.querySelector('#assistantInput');
+ launcher.onclick=()=>{panel.classList.toggle('open'); if(panel.classList.contains('open')) input.focus()}; panel.querySelector('.assistant-close').onclick=()=>panel.classList.remove('open');
+ function add(text,who){const d=document.createElement('div');d.className='assistant-msg '+who;d.textContent=text;box.appendChild(d);box.scrollTop=box.scrollHeight}
+ function answer(t){
+  const x=t.toLowerCase();
+  if(/tự tử|tự sát|tự làm hại|muốn chết|không muốn sống|kết liễu|tự huỷ|tự hủy/.test(x)) return 'Mình rất tiếc vì bạn đang phải chịu cảm giác nặng nề như vậy. Đừng ở một mình lúc này: hãy nói ngay với bố mẹ, thầy cô, người thân hoặc một người lớn bạn tin tưởng và nhờ họ ở cạnh bạn. Nếu bạn có nguy cơ làm hại bản thân ngay lúc này, hãy gọi dịch vụ khẩn cấp tại nơi bạn đang ở hoặc đến cơ sở y tế gần nhất. Bạn không cần tự xử lý chuyện này một mình.';
+  if(/mất ngủ|khó ngủ|thức khuya|ngủ không/.test(x)) return 'Nếu đầu óc vẫn chạy khi nằm xuống, tối nay hãy thử dừng việc học trước giờ ngủ một khoảng ngắn, ghi ra 3 việc cần làm ngày mai rồi cất sách vở. Tránh học bù bằng cách thức quá khuya; thiếu ngủ thường khiến việc học và cảm xúc đều khó hơn.';
+  if(/thi|điểm|đại học|đậu|trượt|kiểm tra|thi cử|học tập|bài vở|môn/.test(x)) return 'Áp lực thi cử rất dễ khiến mọi thứ trông như một nhiệm vụ khổng lồ. Bạn thử chọn đúng 1 việc có thể hoàn thành trong 25–30 phút, sau đó nghỉ ngắn. Nếu đang lo một môn cụ thể, hãy viết cho mình: môn gì, còn bao lâu và phần nào bạn chưa chắc — mình có thể giúp bạn chia nhỏ kế hoạch.';
+  if(/cha mẹ|bố mẹ|ba mẹ|gia đình|kỳ vọng|kì vọng/.test(x)) return 'Kỳ vọng từ gia đình có thể khiến bạn cảm thấy mình phải luôn đạt kết quả tốt. Khi nói chuyện, thử dùng câu “Con đang cảm thấy… và con cần…” thay vì chỉ nói về điểm số. Bạn cũng có thể nhờ một thầy cô hoặc người lớn mà bạn tin tưởng làm cầu nối.';
+  if(/bạn bè|so sánh|mạng xã hội|facebook|tiktok|instagram/.test(x)) return 'So sánh bản thân với người khác thường chỉ cho bạn thấy một phần câu chuyện của họ. Hãy thử giảm thời gian xem nội dung khiến bạn căng thẳng và ghi lại 1–2 tiến bộ của chính mình trong tuần này.';
+  if(/ngành|trường|nghề|tương lai|định hướng/.test(x)) return 'Chưa biết chọn ngành ngay lập tức không có nghĩa là bạn đã chậm. Bạn có thể bắt đầu từ 3 câu hỏi: mình thích làm gì, mình có khả năng gì, và công việc nào phù hợp với điều kiện thực tế của mình? Sau đó tìm hiểu từng ngành thay vì phải quyết định tất cả trong một ngày.';
+  if(/mệt|kiệt sức|chán|stress|căng thẳng|áp lực|lo lắng|buồn|khóc/.test(x)) return 'Mình nghe thấy bạn đang khá mệt. Trước khi cố học thêm, hãy thử giảm mục tiêu xuống mức nhỏ nhất: uống nước, rời bàn 5–10 phút, hít thở chậm và chọn một việc cần thiết nhất. Nếu cảm giác này kéo dài hoặc ảnh hưởng mạnh đến sinh hoạt, hãy nói với người lớn hoặc chuyên gia tâm lý.';
+  if(/cảm ơn|thanks/.test(x)) return 'Không có gì. Bạn không cần phải giải quyết mọi thứ trong một lần. Khi cần, cứ viết tiếp cho mình điều đang làm bạn nặng đầu nhất.';
+  return 'Cảm ơn bạn đã chia sẻ. Mình chưa muốn đoán sai điều bạn đang cần. Bạn có thể nói rõ hơn một chút: chuyện này liên quan đến học tập, kỳ thi, gia đình, bạn bè, chọn ngành hay cảm xúc của bạn? Mình sẽ cùng bạn chia nhỏ vấn đề.';
+ }
+ function send(q){const t=(q||input.value).trim();if(!t)return;add(t,'user');input.value='';setTimeout(()=>add(answer(t),'bot'),180)}
+ document.getElementById('assistantSend').onclick=()=>send(); input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}); panel.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>send(b.dataset.q));
+})();
 </script></body></html>

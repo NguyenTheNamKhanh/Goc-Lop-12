@@ -291,7 +291,9 @@ body p, body li, body blockquote, body .article-section, body .article-main {
   text-align: left !important;
 }
 </style>
+  <link rel="stylesheet" href="assets/css/portal.css">
 </head><body>
+<a class="skip-link" href="#main-content">Bỏ qua điều hướng</a>
 <header class="news-header">
  <div class="topline"><div class="container top-inner"><span>THÔNG TIN HỖ TRỢ HỌC SINH LỚP 12</span><span>GÓC LỚP 12</span></div></div>
  <div class="container masthead">
@@ -316,7 +318,7 @@ body p, body li, body blockquote, body .article-section, body .article-main {
  <a class="portal-link" href="cong-cu.html"><b>Tiện ích học sinh</b><span>Công cụ tự kiểm tra & lập kế hoạch</span></a>
 </div></div>
 
-<main>
+<main id="main-content">
 <section class="container page-wrap"><div class="breadcrumb">TRANG CHỦ / CÔNG CỤ</div>
 <div class="article-layout"><div class="article-main">
 <div class="category">TIỆN ÍCH</div><h1>Công cụ tự hỗ trợ dành cho học sinh lớp 12</h1>
@@ -384,4 +386,5 @@ function searchArticles(){
  function send(q){const t=(q||input.value).trim();if(!t)return;add(t,'user');input.value='';setTimeout(()=>add(answer(t),'bot'),180)}
  document.getElementById('assistantSend').onclick=()=>send(); input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}); panel.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>send(b.dataset.q));
 })();
-</script></body></html>
+</script>  <script src="assets/js/portal.js" defer></script>
+</body></html>

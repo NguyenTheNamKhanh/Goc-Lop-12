@@ -1,0 +1,21 @@
+GÓC LỚP 12 — HƯỚNG DẪN ĐƯA LÊN HOSTING
+
+CÁCH ĐƯA LÊN HOSTING (cPanel / public_html)
+1. Giải nén ZIP trên máy tính trước.
+2. Mở thư mục vừa giải nén. Bạn phải nhìn thấy index.html, các trang .html, thư mục assets, README.txt và .htaccess cùng cấp.
+3. Mở File Manager của hosting, vào đúng thư mục web root (thường là public_html; nếu dùng tên miền phụ thì có thể là thư mục document root riêng).
+4. Tải LÊN TOÀN BỘ CÁC TỆP VÀ THƯ MỤC bên trong thư mục đã giải nén vào web root. Không chỉ tải index.html. Không để thành public_html/goc-lop-12-vip-toan-dien/index.html trừ khi muốn website ở đường dẫn con đó.
+5. Sau khi tải lên, kiểm tra cấu trúc: public_html/index.html và public_html/assets/style.css và public_html/assets/app.js. Tên thư mục phải viết thường đúng là assets.
+6. Mở trang chủ rồi nhấn Ctrl+F5 (Windows) để tải lại bỏ qua cache. Link CSS/JS trong bản này có query version mới để giảm lỗi cache.
+
+NẾU VẪN HIỆN CHỮ ĐEN TRÊN NỀN TRẮNG
+A. Mở trực tiếp https://TEN-MIEN-CUA-BAN/assets/style.css?v=20261009-2 (thay TEN-MIEN-CUA-BAN bằng tên miền thật).
+B. Nếu hiện một trang dài có các quy tắc CSS (ví dụ bắt đầu bằng :root hoặc * {), tệp CSS đã được phục vụ. Nếu báo 404/Not Found, thư mục assets chưa nằm trong web root đúng hoặc sai chữ hoa/thường.
+C. Nếu hiện trang đăng nhập, trang 403, hoặc HTML của trang hosting thay vì nội dung CSS, kiểm tra document root, quyền truy cập và cấu hình hosting.
+D. Trên Chrome/Opera: nhấn F12 > Network > tải lại trang > chọn style.css. Xem Status. 200 là tải thành công; 404 là sai đường dẫn/tệp thiếu; 403 là quyền/cấu hình; 500 là lỗi máy chủ.
+E. Kiểm tra file trên hosting có đúng đường dẫn assets/style.css và dung lượng không bằng 0.
+
+LƯU Ý
+- .htaccess áp dụng cho Apache/cPanel. Nếu host dùng Nginx, bỏ qua .htaccess; các đường dẫn HTML/CSS vẫn cần đúng.
+- Không gửi mật khẩu hosting. Nếu cần hỗ trợ tiếp, chỉ gửi tên nền tảng hosting hoặc ảnh màn hình Network/Files (che thông tin nhạy cảm).
+- Đây là website tĩnh. Form và nội dung tự động chạy trên trình duyệt; chưa có cơ sở dữ liệu hoặc hệ thống nhận tin nhắn trực tuyến.
